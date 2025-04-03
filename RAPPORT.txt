@@ -1,6 +1,0 @@
-Plan
-l'objectif de l'expérience
-sa méthode
-son implémentation
-ses résultats et sa conclusion
-

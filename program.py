@@ -63,11 +63,11 @@ def update(frame):
     return line,
 
 ani = animation.FuncAnimation(
-     fig, 
-     update, 
-     frames=range(20), 
-     interval=200, 
-     repeat=False
+    fig, 
+    update, 
+    frames=range(20), 
+    interval=200, 
+    repeat=False
 )
 
 plt.show()
