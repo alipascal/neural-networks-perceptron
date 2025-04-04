@@ -21,7 +21,7 @@ import numpy as np
 
 def sigmoid(x):
 	"""
-	Fonction sigmoïde, tel que : 
+	Fonction d'activation sigmoïde, tel que : 
 	➝  f(x) = 1 / (1 + e^-x)
 	"""
 	return 1 / ( 1 + math.exp(-x) )
