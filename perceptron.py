@@ -47,7 +47,7 @@ def activation(z):
 #weighted sum = w1*x1 + w2*x2 ... + b
 z = sigmoid(np.dot(X, w) + b)
 
-
+y = 0
 y_pred = activation(z)
 error = y - y_pred
 

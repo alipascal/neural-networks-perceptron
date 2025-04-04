@@ -37,50 +37,47 @@ def seuil(x):
 	"""
 	return 1 if x > 0 else 0 if x < 0 else 0.5
 
+
 def prediction(x):
 	"""
 	➝  f(0) = 0.5, f(-∞) = 0, f(+∞) = 1
 	"""
 	return 1 if x > 0.5 else 0 if x < 0.5 else 0
 
+
 class Perceptron():
 
-	def __init__(self,nb_inputs=2, lr = 0.01, epochs = 20):
-		#setting default parameters
-		#TODO
-		self.lr = lr
+	def __init__(self,nb_inputs=2, nu = 0.01, epochs = 20):
+		self.nu = nu
 		self.epochs = epochs
 		self.nb_inputs = nb_inputs
 		self.w = np.random.uniform(-1, 1, size=(nb_inputs))
-		self.bias = random.uniform(-1,1)
+		self.bias = np.random.uniform(-1,1)
 		self.misses = []
 
 	def predict(self, X):
-		w = self.w
-		b = self.bias
-		netz = np.dot(X,self.w) + b
+		netz = np.dot(X,self.w) + self.bias
 		oz = sigmoid(netz)
-		tz = seuil(oz)
-		return tz
+		return prediction(oz)
 
-	def display_netz(self):
-		pass
+	def linear(self):
+		netz = np.dot(X,self.w) + self.bias 
 
-	def learn(self, xi, zi):
-		z = self.predict(xi)
-		if zi != z:
+	def learn(self, xi, tz):
+		oz = self.predict(xi)
+		if tz != oz:
 			"le test est mal placé"
-		delta_w_iz = nu * dz * oz
 		dz = (tz - oz) * oz * (1 - oz)
-
-		#TODO
+		for i in range(len(self.w)): #TODO range(len())
+			delta_w_iz = self.nu * dz * oz
+			self.w[i] += delta_w_iz
+		delta_biais = self.nu * dz * oz
+		self.bias += delta_biais
+		#TODO affichage
 
 	def fit(self, X, z):
-		# pour tous xi, yi de zip(X,y)
-
-		# self.learn(xi, yi)
-		pass
-
+		for xi, zi in zip(X,z):
+			self.learn(xi, zi)
 
 # ----------------------------
  		
@@ -111,7 +108,7 @@ dz = (tz - oz) * oz * (1 - oz)
 
 print(f"point{X}, netz={netz}, oz={oz}, pred_z={pred_z}, tz={tz}, dz={dz}")
 
-# -------------------
+# ----------------------------------------------------------------------------
 
 
 # import numpy as np
