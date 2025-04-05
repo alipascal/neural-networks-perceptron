@@ -82,6 +82,3 @@ X, y = load_digits(return_X_y=True)
 clf = Perceptron(tol=1e-3, random_state=0)
 clf.fit(X, y)
 clf.score(X, y)
-
-# Perceptron() fdrom scratch
-# https://python.plainenglish.io/building-a-perceptron-from-scratch-a-step-by-step-guide-with-python-6b8722807b2e

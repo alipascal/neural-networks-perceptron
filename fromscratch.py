@@ -1,22 +1,12 @@
 """
 
-
-class Perceptron():
-
-	def predict(self, X):
-        w = self.w
-        b = self.bias
-        z = sigmoid(np.dot(X,self.w) + b)
-
-    def display_netz(self):
-    	pass
-
-
+Perceptron() fdrom scratch
+https://python.plainenglish.io/building-a-perceptron-from-scratch-a-step-by-step-guide-with-python-6b8722807b2e
 
 """
 import math
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 
 def sigmoid(x):
@@ -25,7 +15,7 @@ def sigmoid(x):
 	➝  f(x) = 1 / (1 + e^-x)
 	"""
 	return 1 / ( 1 + math.exp(-x) )
-	
+
 
 def seuil(x):
 	"""
@@ -55,84 +45,90 @@ class Perceptron():
 		self.bias = np.random.uniform(-1,1)
 		self.misses = []
 
-	def predict(self, X):
+	def activation(self, X):
+		"""Fonction d'activation
+		"""
 		netz = np.dot(X,self.w) + self.bias
-		oz = sigmoid(netz)
+		return sigmoid(netz)
+
+	def predict(self, X):
+		oz = self.activation(X)
 		return prediction(oz)
 
 	def linear(self):
-		netz = np.dot(X,self.w) + self.bias 
+		#TODO
+		# Équation : 0 = w1 * x1 + w2 * x2 + b
+		# <=> x2 = -(w1/w2) * x1 - (b/w2)
+		if self.w[1] == 0:
+			raise ZeroDivisionError("w2 ne doit pas être nul pour tracer la droite")
+		a = -self.w[0] / self.w[1]
+		b = -self.bias / self.w[1]
+		return (a, b)  # x2 = a * x1 + b
 
-	def learn(self, xi, tz):
-		oz = self.predict(xi)
-		if tz != oz:
-			"le test est mal placé"
+	def train(self, xi, tz, oz):
 		dz = (tz - oz) * oz * (1 - oz)
-		for i in range(len(self.w)): #TODO range(len())
-			delta_w_iz = self.nu * dz * oz
+		for i in range(len(self.w)):
+			delta_w_iz = self.nu * dz * xi
 			self.w[i] += delta_w_iz
-		delta_biais = self.nu * dz * oz
+		delta_biais = self.nu * dz
 		self.bias += delta_biais
-		#TODO affichage
 
 	def fit(self, X, z):
+		oz = self.activation(X)
 		for xi, zi in zip(X,z):
-			self.learn(xi, zi)
+			self.train(xi, zi, oz)
+			result = True if zi == prediction(oz) else False
+			color = "green" if result else "red"
 
 # ----------------------------
- 		
-X = (0, 1)
-z = 1
+def test_display():
+	X = (0, 1)
+	z = 1
 
-wx1z = 5
-wx2z = -3
-wbz = 1
+	wx1z = 5
+	wx2z = -3
+	wbz = 1
 
-w = [wx1z, wx2z]
-
-
-netz = np.dot(X,w) + wbz
-oz = sigmoid(netz)
-tz = z
-pred_z = seuil(netz)
-
-color_valid = "grey"
-if pred_z == tz:
-	color_valid = "green"
-	print(f"le point {X} est bien placé")
-else:
-	color_valid = "red"
-	print(f"le point {X} est mal placé")
-
-dz = (tz - oz) * oz * (1 - oz)
-
-print(f"point{X}, netz={netz}, oz={oz}, pred_z={pred_z}, tz={tz}, dz={dz}")
-
-# ----------------------------------------------------------------------------
+	w = [wx1z, wx2z]
 
 
-# import numpy as np
-import matplotlib.pyplot as plt
+	netz = np.dot(X,w) + wbz
+	oz = sigmoid(netz)
+	tz = z
+	pred_z = seuil(netz)
 
-# x = list(range(2))
-# y = [np.dot((xi, 1), w) + wbz for xi in x]
-x = np.linspace(-2, 2, 400)
-y = (wx1z * x + wbz) / -wx2z
+	color_valid = "grey"
+	if pred_z == tz:
+		color_valid = "green"
+		print(f"le point {X} est bien placé")
+	else:
+		color_valid = "red"
+		print(f"le point {X} est mal placé")
 
-fig, ax = plt.subplots()
-ax.set_aspect('equal', adjustable='box')
+	dz = (tz - oz) * oz * (1 - oz)
 
-ax.plot(x, y)
+	print(f"point{X}, netz={netz}, oz={oz}, pred_z={pred_z}, tz={tz}, dz={dz}")
+
+	# x = list(range(2))
+	# y = [np.dot((xi, 1), w) + wbz for xi in x]
+	x = np.linspace(-2, 2, 400)
+	y = (wx1z * x + wbz) / -wx2z
+
+	fig, ax = plt.subplots()
+	ax.set_aspect('equal', adjustable='box')
+
+	ax.plot(x, y)
 
 
-# Selector
-plt.scatter(X[0], X[1], alpha=0.5, color=color_valid, s=200)
+	# Selector
+	plt.scatter(X[0], X[1], alpha=0.5, color=color_valid, s=200)
 
-# Points 
-plt.scatter(0, 1, color="black", marker='+')
-plt.scatter(0, 0, color="black", marker="_")
-plt.scatter(1, 0, color="black", marker="+")
-plt.scatter(1, 1, color="black", marker="+")
+	# Points 
+	plt.scatter(0, 1, color="black", marker='+')
+	plt.scatter(0, 0, color="black", marker="_")
+	plt.scatter(1, 0, color="black", marker="+")
+	plt.scatter(1, 1, color="black", marker="+")
+	plt.show()
 
 # Arrow
 # xp, yp = 5, np.dot((5, 1), w) + wbz # Point pour la flèche
@@ -148,4 +144,4 @@ plt.scatter(1, 1, color="black", marker="+")
 
 # ax.set_xlim(min(x), max(x))
 # ax.set_ylim(min(y), max(y))
-plt.show()
+
