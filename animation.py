@@ -39,7 +39,7 @@ def update(frame):
     elif item_type == "point":
         xp, yp = data
         point = ax.scatter(xp, yp, color='red', s=50)
-        points = point  # Garde une référence pour les points
+        points.append(point) # Garde une référence pour les points
         return lines + points  # Retourne toutes les droites et points actuels
 
 # Création de l'animation : une frame par droite, sans boucle
