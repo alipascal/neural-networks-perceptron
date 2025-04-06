@@ -1,56 +1,66 @@
+"""
+
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
 
-# Liste d'instructions : chaque élément est un tuple ("type", données)
-# "line": (a, b), "point": (x, y)
-instructions = [
-    ("line", (-1, 0)),
-    ("point", (2, 1)),
-    ("line", (0.5, 1)),
-    ("point", (-3, -2)),
-    ("line", (1, -1)),
-    ("point", (0, 0))
-]
 
-# Création de la figure et des axes
-fig, ax = plt.subplots()
-# Abscisses utilisées pour tracer les droites
-x = np.linspace(-10, 10, 200)
+def display(frames, data):
 
-# Liste pour stocker les objets Line2D (droites) et les points
-lines = []
-points = []
+    class UpdateAnimation:
+        def __init__(self, ax, data):
+            self.success = 0
+            self.line, = ax.plot([], [], 'b-')
+            self.point = ax.scatter(0, 0, color="red", s=50)
+            self.x = np.linspace(-1, 2, 200)
+            self.ax = ax
 
-# Fonction d'initialisation de l'animation (appelée une seule fois au début)
-def init():
-    ax.set_xlim(-10, 10)   # Limites de l'axe x
-    ax.set_ylim(-10, 10)   # Limites de l'axe y
-    return []              # Rien à afficher encore
+            # plot parameters
+            self.ax.set_xlim(-1, 2)
+            self.ax.set_ylim(-1, 2)
 
-def update(frame):
-    item_type, data = instructions[frame]
-    if item_type == "line":
-        a, b = data
-        y = a * x + b
-        line, = ax.plot(x, y, label=f'{a:.2f}x + {b:.2f}', color='blue')
-        lines.append(line)  # Garde une référence à chaque ligne
-        return lines + points  # Retourne toutes les droites et points actuels
-    elif item_type == "point":
-        xp, yp = data
-        point = ax.scatter(xp, yp, color='red', s=50)
-        points.append(point) # Garde une référence pour les points
-        return lines + points  # Retourne toutes les droites et points actuels
+            N = len(data)
+            s = data[:, :2] # set
+            c = data[:, 2] # classification
+            ax.scatter(s[c == 0, 0], s[c == 0, 1], marker='+', color='black')
+            ax.scatter(s[c == 1, 0], s[c == 1, 1], marker='_', color='black')
 
-# Création de l'animation : une frame par droite, sans boucle
-ani = animation.FuncAnimation(
-    fig,               # La figure à animer
-    update,            # La fonction de mise à jour
-    frames=len(instructions),  # Nombre de frames (une par droite)
-    init_func=init,    # Fonction d'initiation
-    blit=False,        # Enlève blit pour garder tous les objets affichés
-    repeat=False       # Ne pas boucler l'animation
-)
+        def start(self):
+            return self.line, self.point
 
-plt.legend()
-plt.show()
+        def __call__(self, frame):
+            line, point = frame[0], frame[1]
+            a, b = line
+            y = a * self.x + b
+            self.line.set_data(self.x, y)
+
+            posx, posy = point[0], point[1]
+            self.point.set_offsets(np.array([[posx, posy]]))
+            return self.line, self.point
+
+    fig, ax = plt.subplots()
+    update = UpdateAnimation(ax, data)
+    anim = FuncAnimation(fig, update, init_func=update.start, frames=frames, interval=100, blit=True, repeat=False)
+    plt.show()
+
+
+if __name__ == '__main__':
+    frames = [
+        [(-1, 0), (3, 1)],
+        [(0.5, 1), (2, 0.5)],
+        [(1, -1), (1, 1)],
+        [(0.5, 1), (6, 2)],
+    ]
+    data = [
+        [1,1,0],
+        [2,0,0],
+        [3,1,0],
+        [0,1,0],
+        [1,4,1],
+        [0,2,1],
+        [1,3,1],
+        [0,1,1],
+    ]
+    display(frames, data)
