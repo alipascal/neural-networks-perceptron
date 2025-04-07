@@ -106,7 +106,7 @@ $$
 soit,
 $(4)$
 $$
-\Delta w_{iz} = \nu \times d_z \times o_z
+\Delta w_{iz} = \nu \times d_z \times x_i
 $$
 
 L'apprentissage "*un par un*" met à jour les poids $w_{x_iz}$ après avoir vu chaque exemple test. L'apprentissage se termine lorsqu'il n'y a plus d'erreur, soit de différence entre la valeur attendu $t_z$ et la valeur de sortie $o_z$.
