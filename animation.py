@@ -2,11 +2,7 @@
 @author Alicia TCHEMO
 @date 2025-04-08
 Apprentissage Machine - M1 INFO DCI - Université Paris-Cité
-
-TODO description
-
 """
-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,8 +10,15 @@ from matplotlib.animation import FuncAnimation
 
 
 def display(frames, data):
+    """
+    Affiche une animation de l'apprentissage d'un perceptron
+
+    :param data (list): Les données classées en + et - a affiché sur le graphe 
+    :param frames (list(list(tuple))): Liste des états à afficher, contenant les valeurs des éléments en animation
+    """
 
     class UpdateAnimation:
+
         def __init__(self, ax, data):
             self.success = 0
             self.line, = ax.plot([], [], 'b-')
@@ -25,15 +28,13 @@ def display(frames, data):
             self.x = np.linspace(-1, 2, 200)
             self.ax = ax
 
-            # initialisation parametres affichage
+            # affichage des axes 
             self.ax.set_xlim(-1, 2)
-            self.ax.set_ylim(-1, 2) 
-            
+            self.ax.set_ylim(-1, 2)
 
             # affichage des points
             N = len(data)
             s = data[:, :2] # set
-            print(s)
             c = data[:, 2] # classification
             self.ax.scatter(s[c == 0, 0], s[c == 0, 1], marker='+', color='black')
             self.ax.scatter(s[c == 1, 0], s[c == 1, 1], marker='_', color='black')
@@ -42,7 +43,6 @@ def display(frames, data):
             self.ax.set_title("Perceptron learning")
             self.ax.set_xlabel("x1")
             self.ax.set_ylabel("x2")
-
 
         def start(self):
             return self.line, self.point, self.text

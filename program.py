@@ -1,3 +1,11 @@
+"""
+@author Alicia TCHEMO
+@date 2025-04-08
+Apprentissage Machine - M1 INFO DCI - Université Paris-Cité
+
+TODO description
+"""
+
 import pandas
 import numpy
 import argparse
