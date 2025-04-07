@@ -1,117 +1,121 @@
 """
-Perceptron
-
-Perceptron() fdrom scratch
-https://python.plainenglish.io/building-a-perceptron-from-scratch-a-step-by-step-guide-with-python-6b8722807b2e
-
-notes :
-
-initial ---
-wxz=5
-wyz=-3
-wbz=1
-
-Equation caractéristique :
-5 x - 3 y + 1 = 0 
-> 0 positif (+)
-< 0 négatif (-)
-
-
-Wxz = 5.0001
-Wyz = -2.99
-Wbz = 0.995 + 0.00001 = 0.995
-
+@author Alicia TCHEMO
+@date 2025-04-08
+Apprentissage Machine - M1 INFO DCI - Université Paris-Cité
 """
 
-
+import math
 import numpy as np
 import matplotlib.pyplot as plt
-import random
-import math
 
-X = [1, 0]
-
-w = []
-nInputs = 2
-for i in range(nInputs):
-    w.append(random.uniform(-1, 1)) 
-
-b = random.uniform(-1,1)
 
 def sigmoid(x):
-    return 1/(1+math.exp(-x))
+	"""
+	Fonction d'activation sigmoïde, tel que : 
+	➝  f(x) = 1 / (1 + e^-x)
+	"""
+	return 1 / ( 1 + math.exp(-x) )
 
-def activation(z):
-    return 1 if z >0.5 else 0
 
-#weighted sum = w1*x1 + w2*x2 ... + b
-z = sigmoid(np.dot(X, w) + b)
+def seuil(x):
+	"""
+	Fonction d'activation d'approxiamtion (pas utilisé) : 
+	➝	seuil(x) = 1 si x > 0
+		seuil(x) = 0 si x < 0
+		seuil(0) = 0.5
+	"""
+	return 1 if x > 0 else 0 if x < 0 else 0.5
 
-y = 0
-y_pred = activation(z)
-error = y - y_pred
 
-lr = 0.1
-w_new = []
-for wi, xi in zip(w, X):
-    w_new.append(wi + lr*error*xi)
+def prediction(x):
+	"""
+	➝ f(0) = 0.5, f(-∞) = 0, f(+∞) = 1
+	"""
+	return 1 if x > 0.5 else 0 if x < 0.5 else 0
 
-b_new = b + lr*error
-
+def normalize(data):
+	return (data - data.min(axis=0)) / (data.max(axis=0) - data.min(axis=0))
 
 
 class Perceptron():
-    
-    def __init__(self,input_size = 2, lr = 0.01, epochs = 20):
-        #setting default parameters
-        self.lr = lr
-        self.epochs = epochs
-        self.input_size = input_size
-        self.w = np.random.uniform(-1, 1, size=(input_size))
-        self.bias = random.uniform(-1,1)
-        self.misses = []
-        
-    def predict(self, X):
-        w = self.w
-        b = self.bias
-        z = sigmoid(np.dot(X,self.w) + b)
-        
-        if z > 0.5:
-            return 1
-        else:
-            return 0
-        
-    def fit(self, X, y):
-        
-        for epoch in range(self.epochs):
-            miss = 0
-            for yi, xi in zip(y, X):
-                y_pred = self.predict(xi)
-                #update the weights to minimize error
-                error = yi - y_pred
-                self.w += self.lr*error*xi
-                self.bias += self.lr*error
-                miss += int(error != 0.0)
-            #get the number of missclassifications of each epoch
-            self.misses.append(miss)
 
-from sklearn import datasets
-iris = datasets.load_iris()
-X = iris.data
-y = iris.target
+	def __init__(self, nu = 0.1, epochs = 20):
+		NB_INPUTS = 2
+		self.nu = nu
+		self.epochs = epochs
+		self.w = np.random.uniform(-1, 1, size=(NB_INPUTS))
+		self.bias = np.random.uniform(-1,1)
+		self.frames_to_display = list()
 
-X = X[:100, [0,2]]
-y = y[y<2]
+	def activation(self, X):
+		"""Fonction d'activation
+		"""
+		netz = X[0] * self.w[0] + X[1] * self.w[1] + self.bias
+		return sigmoid(netz)
 
-# plot the data
-plt.figure(figsize=(16,8))
-plt.scatter(X[:50,0], X[:50,1], marker='o', label='setosa')
-plt.scatter(X[50:,0], X[50:,1], marker='x', label='virginica')
-plt.ylabel('sepal length')
-plt.xlabel('petal length')
-plt.show()
+	def predict(self, X):
+		oz = self.activation(X)
+		return prediction(oz)
 
-perceptron = Perceptron()
-perceptron.fit(X,y)
-print(perceptron.w, perceptron.bias)
-#(array([0.09893529, 0.09323132]), -0.763184789232628)
+	def linear(self):
+		#TODO
+		# Équation : 0 = w1 * x1 + w2 * x2 + b
+		# <=> x2 = -(w1/w2) * x1 - (b/w2)
+		# x2 = a * x1 + b
+		if self.w[1] == 0:
+			raise ZeroDivisionError("Impossible d'afficher la droite. w_x2z ne doit par être égal à 0.")
+		a = -self.w[0] / self.w[1]
+		b = -self.bias / self.w[1]
+		return a, b  
+
+	def train(self, xi, tz, oz):
+		dz = (tz - oz) * oz * (1 - oz)
+		for i in range(len(self.w)):
+			delta_w_iz = self.nu * dz * xi[i]
+			self.w[i] += delta_w_iz
+
+		delta_biais = self.nu * dz * 1
+		self.bias += delta_biais
+
+	def fit(self, X, z):
+		for _ in range(self.epochs):
+			miss = 0
+			for xi, zi in zip(X,z):
+				oz = self.activation(xi)
+				self.train(xi, zi, oz)
+				result = True if zi == prediction(oz) else False
+				color = "green" if result else "red"
+				miss += 0 if result else 1
+				line = self.linear()
+				self.frames_to_display.append([line, xi])
+			if miss == 0:
+				break
+				
+
+
+
+# --- test ------------------------------------------------------------------------
+
+import animation
+
+if __name__ == '__main__':
+	data = [
+		[2,1,0],
+		[2,0,0],
+		[3,1,0],
+		[1,1,0],
+		[1,4,1],
+		[0,2,1],
+		[1,3,1],
+		[0,1,1],
+	]
+
+	N = len(data)
+	data = np.array(data)
+
+	data = normalize(data)
+	perceptron = Perceptron(epochs=100)
+	perceptron.fit(data[:, :2],data[:, 2])
+
+	frames = perceptron.frames_to_display
+	animation.display(frames, data)
