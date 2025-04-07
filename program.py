@@ -17,7 +17,7 @@ import animation
 
 # Gestion des parametres de l'invite de commande
 parser = argparse.ArgumentParser(description="Gestion des paramètres")
-parser.add_argument('--file', help="Fichier CSV en entrée", default='example.csv')
+parser.add_argument('--file', help="Fichier CSV en entrée", default='data.csv')
 args = parser.parse_args()
 
 file = args.file
