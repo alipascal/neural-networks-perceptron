@@ -3,7 +3,7 @@ Apprentissage Machine - Master 1 INFO; Données, Connaissance, Intelligence (DCI
 alicia.tchemo@etu.u-paris.fr
 *Réalisé en mars 2025*
 
-==TODO lien GitHub==
+[Programme Python accessible sur GitHub](https://github.com/alipascal/neural-networks-perceptron)
 
 ---
 
@@ -119,6 +119,22 @@ ou couleur chaude & couleur froides
 
 ## 2. Implémentation
 
+
 ## 3. Analyse des résultats
+
+
+#### Erreurs corrigés
+
+Il y a une erreur dans le programme qui a pu être visualiser avec l'animation de la droite de décision. En effet, étant donnée que le programme entraine le perceptron et modifie la droite et le poids du perceptron systématiquement après chaque tests, alors on se retrouve à la dernière itération sur les tests, parfois avec une droite se retrouve mal placé.
+```pseudocode
+
+
+```
+J'en déduis que cette erreur est sûrement du la différence entre $\nu$ et l'*erreur* entre la valeur attendue $t_z$ et la valeur de la fonction d'activation $o_z$ - qui ne sont jamais égals.
+Pour palier à ce problème, on décide de ne pas entrainer le perceptron si la valeur d'*erreur* est inférieur à $\nu$.
+```pseudocode
+
+
+```
 
 ## 4. Conclusion
