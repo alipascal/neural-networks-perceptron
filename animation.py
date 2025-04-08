@@ -15,6 +15,8 @@ def display(frames, data, millisecondes=50, save=False):
 
     :param data (list): Les données classées en + et - a affiché sur le graphe 
     :param frames (list(list(tuple))): Liste des états à afficher, contenant les valeurs des éléments en animation
+    :param-optionnel millisecondes (int): Temps d'intervale entre chaque frame de l'aniamation
+    :param-optionnel save (bool): Pour la sauvegarde en format .gif de l'animation
     """
 
     class UpdateAnimation:
