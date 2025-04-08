@@ -31,6 +31,7 @@ id_col = data.columns[0]
 data.set_index(id_col, inplace=True)
     # Numérisation (string to bool)
 classification = data.columns[-1]
+d = None
 if data[classification].dtype != 'int64':
     d = {elem: index for index, elem in enumerate(pandas.unique(data[classification]))}
     data[classification] = data[classification].map(d)
@@ -38,12 +39,19 @@ if data[classification].dtype != 'int64':
 # Début du progamme
 N = data.shape[0]
 data.iloc[:, :2] = perceptron.normalize(data.iloc[:, :2])
+test = data.iloc[-1]
+data =  data.iloc[:-1]
+
 p = Perceptron(epochs=1000, nu=0.01)
 data = numpy.array(data)
 print("Début de l'entrainement du perceptron")
 t = time()
 p.fit(data[:, :2],data[:, 2])
 print(f"Fin entrainement ({time() - t}s)")
+
+test = numpy.array(test)
+result = p.predict(test[0:2])
+print(result if d == None else next(k for k, v in d.items() if v == result))
 
 frames = p.frames_to_display
 animation.display(frames, data, millisecondes=1)
