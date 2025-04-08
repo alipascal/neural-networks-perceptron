@@ -1,1 +1,25 @@
-ville,longitute,latitude
+ville,longitude,latitude,pays
+Paris,2.349014,48.864716,France
+Amiens,2.295753,49.894066,France
+Lille,3.057256,50.629250,France
+Calais,1.85639,50.94806,France
+Dunkerque,2.397766,51.050030,France
+Roubaix,3.181670,50.690102,France
+Metz,6.177778,49.120277,France
+Nancy,6.184600,48.693600,France
+Rouen,1.100000,49.439999,France
+Le Havre,0.100000,49.490002,France
+Caen,-0.370000,49.180000,France
+Le Mans,0.209856,48.008224,France
+Orléans,1.90389,47.90289,France
+Reims,4.034700,49.262798,France
+Liège,5.5685,50.6326,Belgique
+Gand,3.7167,51.0500,Belgique
+Bruges,3.2247,51.2093,Belgique
+Courtrai,3.2667,50.8333,Belgique
+Charleroi,4.4447,50.4114,Belgique
+Namur,4.8667,50.4667,Belgique
+Mons,3.9500,50.4541,Belgique
+Malines,4.4786,51.0257,Belgique
+Saint-Nicolas,4.1431,51.1651,Belgique
+Louvain,4.7000,50.8833,Belgique
