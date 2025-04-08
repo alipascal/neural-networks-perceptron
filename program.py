@@ -4,6 +4,8 @@
 Apprentissage Machine - M1 INFO DCI - Université Paris-Cité
 
 Programme d'un perceptron à deux paramètres d'entrée, avec visualisation de l'évolution de son apprentissage via une animation.
+
+Fichier Main !!!
 """
 
 import pandas
