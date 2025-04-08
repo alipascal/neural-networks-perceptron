@@ -81,7 +81,6 @@ class Perceptron():
 		for _ in range(self.epochs):
 			miss = 0
 			for xi, zi in zip(X,z):
-				#TODO if error < nu ne pas entrainer le model et ne pas compter l'erreur
 				oz = self.activation(xi)
 				self.train(xi, zi, oz)
 				result = True if zi == prediction(oz) else False
@@ -113,9 +112,9 @@ if __name__ == '__main__':
 	data = np.array(data)
 
 	data = normalize(data)
-	perceptron = Perceptron(epochs=100)
+	perceptron = Perceptron(epochs=500)
 	perceptron.fit(data[:, :2],data[:, 2])
 
 	# Tests animation
 	frames = perceptron.frames_to_display
-	animation.display(frames, data)
+	animation.display(frames, data, millisecondes=50)

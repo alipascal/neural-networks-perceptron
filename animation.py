@@ -6,10 +6,10 @@ Apprentissage Machine - M1 INFO DCI - Université Paris-Cité
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 
 
-def display(frames, data):
+def display(frames, data, millisecondes=50, save=False):
     """
     Affiche une animation de l'apprentissage d'un perceptron
 
@@ -22,9 +22,10 @@ def display(frames, data):
         def __init__(self, ax, data):
             self.success = 0
             self.line, = ax.plot([], [], 'b-')
-            self.point = ax.scatter(0, 0, color="red", s=50, alpha=0.5)
-            self.nb_tests = 0
+            self.point = ax.scatter(0, 0, color="red", s=90, alpha=0.4)
             self.text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
+            self.nb_tests = 0
+            self.iteration = len(data)
             self.x = np.linspace(-1, 2, 200)
             self.ax = ax
 
@@ -41,8 +42,8 @@ def display(frames, data):
 
             # titres & labels
             self.ax.set_title("Perceptron learning")
-            self.ax.set_xlabel("x1")
-            self.ax.set_ylabel("x2")
+            self.ax.set_xlabel(r"$x_1$")
+            self.ax.set_ylabel(r"$x_2$")
 
         def start(self):
             return self.line, self.point, self.text
@@ -61,13 +62,16 @@ def display(frames, data):
 
             # update nb_tests text
             self.nb_tests += 1
-            self.text.set_text(f"nb tests = {self.nb_tests}")
+            self.text.set_text(f"epochs = {self.nb_tests // self.iteration}")
 
             return self.line, self.point, self.text
 
     fig, ax = plt.subplots()
     update = UpdateAnimation(ax, data)
-    anim = FuncAnimation(fig, update, init_func=update.start, frames=frames, interval=100, blit=True, repeat=False)
+    anim = FuncAnimation(fig, update, init_func=update.start, frames=frames, interval=millisecondes, blit=True, repeat=False)
+    if save:
+        writer = PillowWriter(fps=15,metadata=dict(artist='alipascal'),bitrate=1800)
+        anim.save('figureT4.gif', writer=writer)
     plt.show()
 
 
@@ -92,4 +96,5 @@ if __name__ == '__main__':
         [1,3,1],
         [0,1,1],
     ]
+    data = np.array(data)
     display(frames, data)
