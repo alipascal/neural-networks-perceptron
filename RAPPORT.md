@@ -20,16 +20,15 @@ Ce rapport contient le compte rendu d'un programme Python [^1] qui, par un noeud
 
 #### Problématique
 
-Malheureusement, Pierre s'est réveillé dans une ville dont il ne connais pas le nom. Il souhaite savoir si il se situe en Belgique ou en France. Or, il ne connait uniquement sa position géographique (longitude et latitude), et celle de 25 autres villes.
+Malheureusement, Pierre s'est réveillé dans une ville dont il ne connais pas le nom. Il souhaite savoir si il se situe en Belgique ou en France. Or, il ne connait uniquement sa position géographique (longitude et latitude), et celle de 25 autres villes belges et française.
 Pour aidez Pierre, on réalise un réseau de neurone à un seul neurone (*perceptron*), pour classifié les villes en deux pays, et prédire la position de Pierre selon le model.
 
 #### Théorie
 
 Pour l'implémentation, d'abord, on se réfère aux équations de modélisation de réseau de neurone, pour ensuite les simplifié. 
 
-![[neural network single output.png]]
-
-***Figure 1.*** Réseaux de neurone
+![[neural network single output cours.png]]
+***Figure 1.*** Réseaux de neurone avec les entrées $X$ et la sortie $O$
 
 Dans ce cas, on considère uniquement deux variables d'entrées $x_1$, $x_2$, tel que $X = \{ x_1, x_2 \}$, et un neurone de sortie $z$.
 
@@ -37,9 +36,9 @@ Dans ce cas, on considère uniquement deux variables d'entrées $x_1$, $x_2$, te
 
 ***Figure 2.*** Perceptron à plusieurs entrées [^3]
 
-![[perceptron.png]]
-
-***Figure 3.*** Perceptron à deux entrées
+![[Pasted image 20250409205252.png]]
+![[Pasted image 20250409205318.png]]
+***Figure 3.*** Perceptron à deux entrées (implémenté dans le programme)
 
 Le poids des connexions entre les noeuds généralement noté $w_{ij}$, ici sont réduite au nombre de trois, avec : 
 - $w_{x_1z}$ : connexion entre la variable d'entrée $x_1$ et le neurone de sortie $z$
@@ -245,6 +244,6 @@ Finalement, Pierre à observer l'environement autour de lui, et à compris qu'il
 
 [^1]: Programme Python "Visualisation de l'apprentissage d'un Perceptron", sur [GitHub](https://github.com/alipascal/neural-networks-perceptron) 
 
-[^2]: Bruno Bouzy, Cours Apprentissage Machine "Induction on Decision Trees", diapo 13–15, (2025)
+[^2]: Bruno Bouzy, Cours Apprentissage Machine "Réseaux de neurones (Partie 1b) - Le perceptron illustré sur le OR, (2025)
 
 [^3]: Marius-Constantin POPESCU, Valentina E. BALAS, Liliana PERESCU-POPESCU3, Nikos MASTORAKIS; "Multilayer Perceptron and Neural Networks"; Issue 7, Volume 8, July (2009)
