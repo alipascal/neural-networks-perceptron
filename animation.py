@@ -26,8 +26,6 @@ def display(frames, data, millisecondes=50, save=False):
             self.line, = ax.plot([], [], 'b-')
             self.point = ax.scatter(0, 0, color="red", s=90, alpha=0.4)
             self.text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
-            self.nb_tests = 0
-            self.iteration = len(data)
             self.x = np.linspace(-1, 2, 200)
             self.ax = ax
 
@@ -51,7 +49,7 @@ def display(frames, data, millisecondes=50, save=False):
             return self.line, self.point, self.text
 
         def __call__(self, frame):
-            line, point = frame[0], frame[1]
+            line, point, epochs = frame[0], frame[1], frame[2]
             
             # update de la droite
             a, b = line
@@ -63,8 +61,7 @@ def display(frames, data, millisecondes=50, save=False):
             self.point.set_offsets(np.array([[posx, posy]]))
 
             # update nb_tests text
-            self.nb_tests += 1
-            self.text.set_text(f"epochs = {self.nb_tests // self.iteration}")
+            self.text.set_text(f"epochs = {epochs}")
 
             return self.line, self.point, self.text
 
@@ -72,8 +69,8 @@ def display(frames, data, millisecondes=50, save=False):
     update = UpdateAnimation(ax, data)
     anim = FuncAnimation(fig, update, init_func=update.start, frames=frames, interval=millisecondes, blit=True, repeat=False)
     if save:
-        writer = PillowWriter(fps=15,metadata=dict(artist='alipascal'),bitrate=1800)
-        anim.save('figureT4.gif', writer=writer)
+        writer = PillowWriter(fps=15,metadata=dict(artist='me'),bitrate=1800)
+        anim.save('figure.gif', writer=writer)
     plt.show()
 
 
@@ -83,10 +80,10 @@ def display(frames, data, millisecondes=50, save=False):
 if __name__ == '__main__':
 
     frames = [
-        [(-1, 0), (3, 1)],
-        [(0.5, 1), (2, 0.5)],
-        [(1, -1), (1, 1)],
-        [(0.5, 1), (6, 2)],
+        [(-1, 0), (3, 1), 1],
+        [(0.5, 1), (2, 0.5), 2],
+        [(1, -1), (1, 1), 3],
+        [(0.5, 1), (6, 2), 4],
     ]
     data = [
         [2,1,0],

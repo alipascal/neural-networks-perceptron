@@ -78,7 +78,7 @@ class Perceptron():
 		self.bias += delta_biais
 
 	def fit(self, X, z):
-		for _ in range(self.epochs):
+		for n in range(self.epochs + 1):
 			miss = 0
 			for xi, zi in zip(X,z):
 				oz = self.activation(xi)
@@ -87,9 +87,12 @@ class Perceptron():
 				color = "green" if result else "red"
 				miss += 0 if result else 1
 				line = self.linear()
-				self.frames_to_display.append([line, xi])
+				self.frames_to_display.append([line, xi, n])
+			print(f"\repochs {n}", end="")
 			if miss == 0:
 				break
+		print()
+
 				
 
 # --- test ------------------------------------------------------------------------
