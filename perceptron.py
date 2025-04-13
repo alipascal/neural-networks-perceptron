@@ -40,7 +40,7 @@ def normalize(data):
 
 class Perceptron():
 
-	def __init__(self, nu = 0.1, epochs = 20):
+	def __init__(self, nu = 0.1, epochs = 1000):
 		NB_INPUTS = 2
 		self.nu = nu
 		self.epochs = epochs
@@ -88,7 +88,7 @@ class Perceptron():
 				miss += 0 if result else 1
 				line = self.linear()
 				self.frames_to_display.append([line, xi, n])
-			print(f"\repochs {n}", end="")
+			print(f"\repochs={n}", end="")
 			if miss == 0:
 				break
 		print()
