@@ -71,6 +71,6 @@ if len(frames) > 15000: # max 15s d'animation, sinon on accélère l'animation
     N = len(frames) * 50 // n_max_epochs
     frames = frames[:N*2] + frames[N*2+1:N*4:10] + frames[N*4+1:-1:itr] + frames[-1:]
     frames = frames[::10]
-    animation.display(frames, data, millisecondes=1)
+    animation.display(frames, data, millisecondes=1, save=True)
 else:
     animation.display(frames, data, millisecondes=1)
