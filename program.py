@@ -51,7 +51,7 @@ if do_test:
     test = data.iloc[-1]
     data = data.iloc[:-1]
 
-p = Perceptron(epochs=10000, nu=0.1)
+p = Perceptron(epochs=10000, nu=0.01)
 data = numpy.array(data)
 print("Début de l'entrainement du perceptron")
 t = time()
