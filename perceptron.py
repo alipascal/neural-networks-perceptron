@@ -61,7 +61,7 @@ class Perceptron():
 		"""Calcule les coefficients a et b de la droite de décision, tel que :
 		0 = w1 * x1 + w2 * x2 + bias
 		<=> x2 = -(w1/w2) * x1 - (bias/w2)
-		soit, x2 = a * x1 + b
+		donc on a, x2 = a * x1 + b
 		"""
 		if self.w[1] == 0:
 			raise ZeroDivisionError("Impossible d'afficher la droite. w_x2z ne doit par être égal à 0.")
@@ -71,9 +71,11 @@ class Perceptron():
 
 	def train(self, xi, tz, oz):
 		dz = (tz - oz) * oz * (1 - oz)
+		# Modifier le poids entre les entrées et le neurone z
 		for i in range(len(self.w)):
 			delta_w_iz = self.nu * dz * xi[i]
 			self.w[i] += delta_w_iz
+		# Modifier le poids du bias
 		delta_biais = self.nu * dz * 1
 		self.bias += delta_biais
 
